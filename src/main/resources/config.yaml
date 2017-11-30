@@ -1,0 +1,46 @@
+kumuluzee:
+  name: my-app
+  version: 1.0.0
+  environment:
+    name: dev
+  health:
+    servlet:
+      mapping: /health
+      enabled: true
+    logs:
+      enabled: true
+      level: INFO
+      period-s: 10
+    checks:
+      disk-space-health-check:
+        threshold: 100000000
+  metrics:
+    web-instrumentation:
+      - name: metricsEndpoint
+        url-pattern: /metrics/*
+      - name: configEndpoint
+        url-pattern: /configs/*
+fault-tolerance:
+  config:
+    watch-enabled: true
+    watch-properties: timeout.value,circuit-breaker.failure-ratio,bulkhead.value
+  orders:
+    bulkhead:
+      value: 5
+    http-find-order:
+      timeout:
+        value: 1000ms
+      circuit-breaker:
+        request-threshold: 10
+        failure-ratio: 0.3
+        delay: 3000ms
+        metrics:
+          rolling-window:
+            size: 5s
+            buckets: 5
+
+
+demo:
+  word1: Word1
+  word2: Word2
+  greeting: Greeting
